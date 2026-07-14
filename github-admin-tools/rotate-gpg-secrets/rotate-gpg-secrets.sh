@@ -52,7 +52,6 @@ set +a
 
 require_variable "GITHUB_OWNER"
 require_variable "GPG_PRIVATE_KEY_FILE"
-require_variable "SIGNING_KEY_ID"
 require_variable "SIGNING_PASSWORD"
 require_variable "REPOSITORIES"
 
@@ -117,14 +116,6 @@ for repository_name in "${repository_names[@]}"; do
     < "$GPG_PRIVATE_KEY_FILE"
   then
     log_error "Failed to set GPG_KEY_CONTENTS for ${repository}"
-    failed_repositories+=("$repository")
-    continue
-  fi
-
-  if ! printf '%s' "$SIGNING_KEY_ID" |
-    gh secret set SIGNING_KEY_ID --repo "$repository"
-  then
-    log_error "Failed to set SIGNING_KEY_ID for ${repository}"
     failed_repositories+=("$repository")
     continue
   fi
